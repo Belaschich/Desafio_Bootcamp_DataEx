@@ -32,12 +32,16 @@
     Com os seguintes critérios:
 
     • preço< 500 : valor condicional será igual "preço abaixo de 500"
+
     • preço >= 500 e <=1000 valor condicional será igual "preço entre 500 e 1000"
+    
     • preço > 1000 : valor condicional será igual "preço acima de 1000". 
   
     **2ª Parte – Desenvolvimento Pipeline SSIS**  
  
  - [X] Desenvolva um pipeline de integração de dados usando o SSIS e realize a  modelagem multidimensional ,desnormalizando os dados gerando e um DW a tabela fato e suas dimensões de acordo com seu entendimento e realize a carga de dados disponibilizados.
+    
     Crie seu projeto no SSIS com o nome Desafio_alunaXX
+    
     Origem de dados: BaseDadosDesafio.csv
  
