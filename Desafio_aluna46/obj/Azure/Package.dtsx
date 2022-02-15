@@ -1,0 +1,457 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/2/2022 1:44:43 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-OQJ04P6"
+  DTS:CreatorName="DESKTOP-OQJ04P6\izabe"
+  DTS:DTSID="{5B27E0DE-6BED-455E-8197-10E8848D9BA2}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.170"
+  DTS:LocaleID="1046"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="12"
+  DTS:VersionGUID="{96CACFFD-5916-4438-99DC-D03849D8B718}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BaseDadosDesafio.csv]"
+      DTS:CreationName="FILE"
+      DTS:DTSID="{262E31D7-B9E3-4C69-BBD2-F8B32BDDE311}"
+      DTS:ObjectName="BaseDadosDesafio.csv">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="C:\Users\izabe\Documents\Izabela\Izabela\Ciencia de dados\Curso\Bootcamp Data Women Engineers  Microsoft e DataEX  ON Demand\DESAFIO\BaseDadosDesafio.csv" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BaseDadosDesafio.xlsx]"
+      DTS:CreationName="FILE"
+      DTS:DTSID="{ECE9385A-2C2B-4A58-9A81-B5C45BDE9823}"
+      DTS:ObjectName="BaseDadosDesafio.xlsx">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="C:\Users\izabe\OneDrive\BaseDadosDesafio.xlsx" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[localhost.DW_46]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{E8749F58-1F5F-4919-B5FE-76DDE9A1B2F6}"
+      DTS:ObjectName="localhost.DW_46">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=DW_46;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Contêiner da Sequência"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Contêiner da Sequência"
+      DTS:DTSID="{9F91BEF6-EED7-440C-9F22-D2C6B89673D6}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Contêiner da Sequência">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Contêiner da Sequência\CARGA"
+          DTS:CreationName="Microsoft.BulkInsertTask"
+          DTS:Description="Tarefa Inserção em Massa"
+          DTS:DTSID="{6F6740C9-8A8E-4EFF-84CA-C6A1786D03D1}"
+          DTS:ExecutableType="Microsoft.BulkInsertTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="CARGA"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <BulkInsertTask:BulkInsertTaskData
+              BulkInsertTask:SourceConnectionName="{262E31D7-B9E3-4C69-BBD2-F8B32BDDE311}"
+              BulkInsertTask:DestinationConnectionName="{E8749F58-1F5F-4919-B5FE-76DDE9A1B2F6}"
+              BulkInsertTask:DestinationTableName="[dbo].[STG_VENDAS]"
+              BulkInsertTask:FirstRow="2"
+              BulkInsertTask:FieldTerminator="Semicolon {;}" xmlns:BulkInsertTask="www.microsoft.com/sqlserver/dts/tasks/bulkinserttask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Contêiner da Sequência\Limpeza STG"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Tarefa Executar SQL"
+          DTS:DTSID="{0A157FDE-AA2D-42A1-9D07-D36FF361DC4B}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Limpeza STG"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{E8749F58-1F5F-4919-B5FE-76DDE9A1B2F6}"
+              SQLTask:SqlStatementSource="TRUNCATE TABLE STG_VENDAS;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Contêiner da Sequência.PrecedenceConstraints[Restrição]"
+          DTS:CreationName=""
+          DTS:DTSID="{7B819807-7C7A-4088-B305-96EC53209FCC}"
+          DTS:From="Package\Contêiner da Sequência\Limpeza STG"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Restrição"
+          DTS:To="Package\Contêiner da Sequência\CARGA" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Contêiner da Sequência 1"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Contêiner da Sequência"
+      DTS:DTSID="{96868AA7-81FD-4C5E-9405-2E5804A40F1B}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Contêiner da Sequência 1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Contêiner da Sequência 1\PAIS"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Tarefa Executar SQL"
+          DTS:DTSID="{0b7e6bf3-f1fe-49a7-8779-a961530e95e4}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="PAIS"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{E8749F58-1F5F-4919-B5FE-76DDE9A1B2F6}"
+              SQLTask:SqlStatementSource="BEGIN TRANSACTION;  &#xA;&#x9;DECLARE @VDATA_INI DATETIME;&#xA;&#x9;SET @VDATA_INI= GETDATE();&#xA;BEGIN TRY  &#xA;&#xA;MERGE D_PAIS AS Destino&#xA;&#xA;USING (SELECT DISTINCT Pais FROM STG_VENDAS) AS Origem&#xA;&#xA;ON Destino.NOME_pais = Origem.Pais&#xA;&#xA;-- Há registro no destino e na origem&#xA;WHEN MATCHED &#xA;&#xA;THEN &#xA;    UPDATE SET NOME_pais = Origem.Pais&#xA;&#xA;--Quando não há registro no destino e há na origem&#xA;WHEN NOT MATCHED &#xA;&#xA;THEN &#xA;    INSERT (NOME_pais) VALUES (Origem.Pais);&#xA;&#xA;   END TRY  &#xA;BEGIN CATCH&#xA; &#x9;IF @@TRANCOUNT &gt; 0  &#xA;        ROLLBACK TRANSACTION; &#xA;&#xA;INSERT INTO [dbo].[LOG_CARGAS]&#xA;           ([NUMERO_ERRO],&#xA;           [SERVERIDADE_ERRO],&#xA;           [ESTADO_ERRO],&#xA;           [PROC_ERRO],&#xA;           [LINHA_ERRO],&#xA;           [MSG_ERRO],&#xA;           [SITUACAO],&#xA;           [PROCESSO],&#xA;           [DATA_INI],&#xA;&#x9;&#x9;   [DATA_FIM])&#xA;     VALUES&#xA;        (ERROR_NUMBER(),&#xA;        ERROR_SEVERITY(),&#xA;        ERROR_STATE(),&#xA;        ERROR_PROCEDURE(),&#xA;        ERROR_LINE() ,&#xA;        ERROR_MESSAGE() ,&#xA;        'ERRO',&#xA;        'CARGA PAIS',&#xA;&#x9;&#x9;@VDATA_INI,&#xA;&#x9;&#x9;GETDATE()&#xA;&#x9;&#x9;)&#xA;&#xA;        &#xA;END CATCH;  &#xA;&#xA;INSERT INTO LOG_CARGAS&#xA;           ([NUMERO_ERRO],&#xA;           [SERVERIDADE_ERRO],&#xA;           [ESTADO_ERRO],&#xA;           [PROC_ERRO],&#xA;           [LINHA_ERRO],&#xA;           [MSG_ERRO],&#xA;           [SITUACAO],&#xA;           [PROCESSO],&#xA;           [DATA_INI],&#xA;&#x9;&#x9;   [DATA_FIM])&#xA;     VALUES&#xA;        (ERROR_NUMBER(),&#xA;        ERROR_SEVERITY(),&#xA;        ERROR_STATE(),&#xA;        ERROR_PROCEDURE(),&#xA;        ERROR_LINE() ,&#xA;        ERROR_MESSAGE() ,&#xA;        'SUCESSO',&#xA;       'CARGA PAIS',&#xA;&#x9;&#x9;@VDATA_INI,&#xA;&#x9;&#x9;GETDATE()&#xA;&#x9;&#x9;)&#xA;&#xA;IF @@TRANCOUNT &gt; 0  &#xA;    COMMIT TRANSACTION;  &#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Contêiner da Sequência 1\PRODUTO"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Tarefa Executar SQL"
+          DTS:DTSID="{dcb88e8c-5fda-4373-8945-149a27d65787}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="PRODUTO"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{E8749F58-1F5F-4919-B5FE-76DDE9A1B2F6}"
+              SQLTask:SqlStatementSource="BEGIN TRANSACTION;  &#xA;&#x9;DECLARE @VDATA_INI DATETIME;&#xA;&#x9;SET @VDATA_INI= GETDATE();&#xA;BEGIN TRY  &#xA;&#xA;MERGE D_Produto AS Destino&#xA;&#xA;USING (SELECT DISTINCT PRODUTO FROM STG_VENDAS) AS Origem&#xA;&#xA;ON Destino.NOME_Produto = Origem.PRODUTO&#xA;&#xA;-- Há registro no destino e na origem&#xA;WHEN MATCHED &#xA;&#xA;THEN &#xA;    UPDATE SET NOME_Produto = Origem.PRODUTO&#xA;&#xA;--Quando não há registro no destino e há na origem&#xA;WHEN NOT MATCHED &#xA;&#xA;THEN &#xA;    INSERT (NOME_Produto) VALUES (Origem.PRODUTO);&#xA;&#xA;   END TRY  &#xA;BEGIN CATCH&#xA; &#x9;IF @@TRANCOUNT &gt; 0  &#xA;        ROLLBACK TRANSACTION; &#xA;&#xA;INSERT INTO [dbo].[LOG_CARGAS]&#xA;           ([NUMERO_ERRO],&#xA;           [SERVERIDADE_ERRO],&#xA;           [ESTADO_ERRO],&#xA;           [PROC_ERRO],&#xA;           [LINHA_ERRO],&#xA;           [MSG_ERRO],&#xA;           [SITUACAO],&#xA;           [PROCESSO],&#xA;           [DATA_INI],&#xA;&#x9;&#x9;   [DATA_FIM])&#xA;     VALUES&#xA;        (ERROR_NUMBER(),&#xA;        ERROR_SEVERITY(),&#xA;        ERROR_STATE(),&#xA;        ERROR_PROCEDURE(),&#xA;        ERROR_LINE() ,&#xA;        ERROR_MESSAGE() ,&#xA;        'ERRO',&#xA;        'CARGA PRODUTO',&#xA;&#x9;&#x9;@VDATA_INI,&#xA;&#x9;&#x9;GETDATE()&#xA;&#x9;&#x9;)&#xA;&#xA;        &#xA;END CATCH;  &#xA;&#xA;INSERT INTO LOG_CARGAS&#xA;           ([NUMERO_ERRO],&#xA;           [SERVERIDADE_ERRO],&#xA;           [ESTADO_ERRO],&#xA;           [PROC_ERRO],&#xA;           [LINHA_ERRO],&#xA;           [MSG_ERRO],&#xA;           [SITUACAO],&#xA;           [PROCESSO],&#xA;           [DATA_INI],&#xA;&#x9;&#x9;   [DATA_FIM])&#xA;     VALUES&#xA;        (ERROR_NUMBER(),&#xA;        ERROR_SEVERITY(),&#xA;        ERROR_STATE(),&#xA;        ERROR_PROCEDURE(),&#xA;        ERROR_LINE() ,&#xA;        ERROR_MESSAGE() ,&#xA;        'SUCESSO',&#xA;       'CARGA PRODUTO',&#xA;&#x9;&#x9;@VDATA_INI,&#xA;&#x9;&#x9;GETDATE()&#xA;&#x9;&#x9;)&#xA;&#xA;IF @@TRANCOUNT &gt; 0  &#xA;    COMMIT TRANSACTION;  &#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Contêiner da Sequência 1\SEGMENTO"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Tarefa Executar SQL"
+          DTS:DTSID="{CA417C82-6FAC-4A82-9611-5E9EBA9C6B97}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SEGMENTO"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{E8749F58-1F5F-4919-B5FE-76DDE9A1B2F6}"
+              SQLTask:SqlStatementSource="BEGIN TRANSACTION;  &#xA;&#x9;DECLARE @VDATA_INI DATETIME;&#xA;&#x9;SET @VDATA_INI= GETDATE();&#xA;BEGIN TRY  &#xA;&#xA;MERGE D_SEGMENTO AS Destino&#xA;&#xA;USING (SELECT DISTINCT SEGMENTO FROM STG_VENDAS) AS Origem&#xA;&#xA;ON Destino.NOME_Segmento = Origem.SEGMENTO&#xA;&#xA;-- Há registro no destino e na origem&#xA;WHEN MATCHED &#xA;&#xA;THEN &#xA;    UPDATE SET NOME_Segmento = Origem.SEGMENTO&#xA;&#xA;--Quando não há registro no destino e há na origem&#xA;WHEN NOT MATCHED &#xA;&#xA;THEN &#xA;    INSERT (NOME_Segmento) VALUES (Origem.SEGMENTO);&#xA;&#xA;   END TRY  &#xA;BEGIN CATCH&#xA; &#x9;IF @@TRANCOUNT &gt; 0  &#xA;        ROLLBACK TRANSACTION; &#xA;&#xA;INSERT INTO [dbo].[LOG_CARGAS]&#xA;           ([NUMERO_ERRO],&#xA;           [SERVERIDADE_ERRO],&#xA;           [ESTADO_ERRO],&#xA;           [PROC_ERRO],&#xA;           [LINHA_ERRO],&#xA;           [MSG_ERRO],&#xA;           [SITUACAO],&#xA;           [PROCESSO],&#xA;           [DATA_INI],&#xA;&#x9;&#x9;   [DATA_FIM])&#xA;     VALUES&#xA;        (ERROR_NUMBER(),&#xA;        ERROR_SEVERITY(),&#xA;        ERROR_STATE(),&#xA;        ERROR_PROCEDURE(),&#xA;        ERROR_LINE() ,&#xA;        ERROR_MESSAGE() ,&#xA;        'ERRO',&#xA;        'CARGA SEGMENTO',&#xA;&#x9;&#x9;@VDATA_INI,&#xA;&#x9;&#x9;GETDATE()&#xA;&#x9;&#x9;)&#xA;&#xA;        &#xA;END CATCH;  &#xA;&#xA;INSERT INTO LOG_CARGAS&#xA;           ([NUMERO_ERRO],&#xA;           [SERVERIDADE_ERRO],&#xA;           [ESTADO_ERRO],&#xA;           [PROC_ERRO],&#xA;           [LINHA_ERRO],&#xA;           [MSG_ERRO],&#xA;           [SITUACAO],&#xA;           [PROCESSO],&#xA;           [DATA_INI],&#xA;&#x9;&#x9;   [DATA_FIM])&#xA;     VALUES&#xA;        (ERROR_NUMBER(),&#xA;        ERROR_SEVERITY(),&#xA;        ERROR_STATE(),&#xA;        ERROR_PROCEDURE(),&#xA;        ERROR_LINE() ,&#xA;        ERROR_MESSAGE() ,&#xA;        'SUCESSO',&#xA;       'CARGA SEGMENTO',&#xA;&#x9;&#x9;@VDATA_INI,&#xA;&#x9;&#x9;GETDATE()&#xA;&#x9;&#x9;)&#xA;&#xA;IF @@TRANCOUNT &gt; 0  &#xA;    COMMIT TRANSACTION;  &#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Contêiner da Sequência 1\TIPO_DESCONTO"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Tarefa Executar SQL"
+          DTS:DTSID="{07bf8e20-dec1-43de-a026-27c9a5276fc3}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="TIPO_DESCONTO"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{E8749F58-1F5F-4919-B5FE-76DDE9A1B2F6}"
+              SQLTask:SqlStatementSource="BEGIN TRANSACTION;  &#xA;&#x9;DECLARE @VDATA_INI DATETIME;&#xA;&#x9;SET @VDATA_INI= GETDATE();&#xA;BEGIN TRY  &#xA;&#xA;MERGE D_TIPO_DES AS Destino&#xA;&#xA;USING (SELECT DISTINCT Tipo_Desconto FROM STG_VENDAS) AS Origem&#xA;&#xA;ON Destino.NOME_Tipo_des = Origem.Tipo_Desconto&#xA;&#xA;-- Há registro no destino e na origem&#xA;WHEN MATCHED &#xA;&#xA;THEN &#xA;    UPDATE SET NOME_Tipo_des = Origem.Tipo_Desconto&#xA;&#xA;--Quando não há registro no destino e há na origem&#xA;WHEN NOT MATCHED &#xA;&#xA;THEN &#xA;    INSERT (NOME_Tipo_des) VALUES (Origem.Tipo_Desconto);&#xA;&#xA;   END TRY  &#xA;BEGIN CATCH&#xA; &#x9;IF @@TRANCOUNT &gt; 0  &#xA;        ROLLBACK TRANSACTION; &#xA;&#xA;INSERT INTO [dbo].[LOG_CARGAS]&#xA;           ([NUMERO_ERRO],&#xA;           [SERVERIDADE_ERRO],&#xA;           [ESTADO_ERRO],&#xA;           [PROC_ERRO],&#xA;           [LINHA_ERRO],&#xA;           [MSG_ERRO],&#xA;           [SITUACAO],&#xA;           [PROCESSO],&#xA;           [DATA_INI],&#xA;&#x9;&#x9;   [DATA_FIM])&#xA;     VALUES&#xA;        (ERROR_NUMBER(),&#xA;        ERROR_SEVERITY(),&#xA;        ERROR_STATE(),&#xA;        ERROR_PROCEDURE(),&#xA;        ERROR_LINE() ,&#xA;        ERROR_MESSAGE() ,&#xA;        'ERRO',&#xA;        'CARGA TIPO DESCONTO',&#xA;&#x9;&#x9;@VDATA_INI,&#xA;&#x9;&#x9;GETDATE()&#xA;&#x9;&#x9;)&#xA;&#xA;        &#xA;END CATCH;  &#xA;&#xA;INSERT INTO LOG_CARGAS&#xA;           ([NUMERO_ERRO],&#xA;           [SERVERIDADE_ERRO],&#xA;           [ESTADO_ERRO],&#xA;           [PROC_ERRO],&#xA;           [LINHA_ERRO],&#xA;           [MSG_ERRO],&#xA;           [SITUACAO],&#xA;           [PROCESSO],&#xA;           [DATA_INI],&#xA;&#x9;&#x9;   [DATA_FIM])&#xA;     VALUES&#xA;        (ERROR_NUMBER(),&#xA;        ERROR_SEVERITY(),&#xA;        ERROR_STATE(),&#xA;        ERROR_PROCEDURE(),&#xA;        ERROR_LINE() ,&#xA;        ERROR_MESSAGE() ,&#xA;        'SUCESSO',&#xA;       'CARGA TIPO DESCONTO',&#xA;&#x9;&#x9;@VDATA_INI,&#xA;&#x9;&#x9;GETDATE()&#xA;&#x9;&#x9;)&#xA;&#xA;IF @@TRANCOUNT &gt; 0  &#xA;    COMMIT TRANSACTION;  &#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Contêiner da Sequência 1.PrecedenceConstraints[Restrição]"
+          DTS:CreationName=""
+          DTS:DTSID="{E3C9FEA9-15FC-4399-9B35-1CEE72DC6718}"
+          DTS:From="Package\Contêiner da Sequência 1\SEGMENTO"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Restrição"
+          DTS:To="Package\Contêiner da Sequência 1\PAIS" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Contêiner da Sequência 1.PrecedenceConstraints[Restrição 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{64DD688E-1484-410D-B78A-533B599A219D}"
+          DTS:From="Package\Contêiner da Sequência 1\PAIS"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Restrição 1"
+          DTS:To="Package\Contêiner da Sequência 1\PRODUTO" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Contêiner da Sequência 1.PrecedenceConstraints[Restrição 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{A69D45A7-D40F-4D4F-81EA-E4597B95CA0E}"
+          DTS:From="Package\Contêiner da Sequência 1\PRODUTO"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Restrição 2"
+          DTS:To="Package\Contêiner da Sequência 1\TIPO_DESCONTO" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Contêiner da Sequência 2"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Contêiner da Sequência"
+      DTS:DTSID="{10FF20FF-35EE-4564-ACFE-CCC91489437D}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Contêiner da Sequência 2">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Contêiner da Sequência 2\CARGA FATO"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Tarefa Executar SQL"
+          DTS:DTSID="{3550FF83-DC5A-4903-B9B3-06AAC8827B9B}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="CARGA FATO"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{E8749F58-1F5F-4919-B5FE-76DDE9A1B2F6}"
+              SQLTask:SqlStatementSource="BEGIN TRANSACTION;  &#xA;   DECLARE @VDATA_INI DATETIME;&#xA;    DECLARE @VPROCESSO VARCHAR(30);&#xA;    SET @VDATA_INI= GETDATE();&#xA;    SET @VPROCESSO= 'CARGA FATO'&#xA;BEGIN TRY  &#xA;&#xA;&#xA;MERGE FATO_VENDA AS Destino&#xA;&#xA;USING (&#xA;SELECT b.ID_Segmento,&#xA;       c.ID_Pais,&#xA;       d.ID_Produto,&#xA;       e.Id_Tipo_Des,&#xA;       CAST(REPLACE(a.Qtde_Vendas,',','.') AS decimal(10,2)) AS Qtd_Vendas,&#xA;       CAST(REPLACE(a.Preco_Custo,',','.') AS decimal(10,2))AS Preco_Custo,&#xA;       CAST(REPLACE(a.Preco_Venda,',','.') AS decimal(10,2)) AS Preco_Venda,&#xA;       CAST(REPLACE(a.Vendas_Bruta,',','.') AS decimal(10,2))AS Vendas_Bruta,&#xA;       CAST(REPLACE(a.Vendas,',','.') AS decimal(10,2)) AS Vendas,&#xA;       CAST(REPLACE(a.Custo_venda,',','.') AS decimal(10,2))AS Custo_venda,&#xA;       CAST(REPLACE(a.Desconto,',','.') AS decimal(10,2)) AS Desconto,&#xA;       CAST(REPLACE(a.Lucro,',','.') AS decimal(10,2))AS Lucro,&#xA;       CAST(a.Data_venda AS DATE) AS Data_venda&#xA;  FROM STG_VENDAS a&#xA;   LEFT JOIN D_SEGMENTO b&#xA;&#x9;ON a.SEGMENTO=B.NOME_Segmento&#xA;&#xA;   LEFT JOIN D_PAIS c&#xA;&#x9;ON a.PAIS=c.NOME_pais&#xA;&#xA;  LEFT JOIN D_Produto d&#xA;&#x9;ON a.PRODUTO=D.NOME_Produto&#xA;&#xA;  LEFT JOIN D_TIPO_DES e&#xA;&#x9;ON a.Tipo_Desconto=E.NOME_Tipo_des&#xA;) AS origem &#xA;   ON Destino.Data_venda = Origem.Data_venda&#xA;&#xA;-- Há registro no destino e na origem&#xA;WHEN MATCHED &#xA;&#xA;THEN &#xA;    UPDATE SET  ID_Segmento=origem.ID_Segmento, &#xA;                ID_Pais=origem.ID_Pais,&#xA;                ID_Produto=origem.ID_Produto,&#xA;                Id_Tipo_Des=origem.Id_Tipo_Des,&#xA;                Qtd_Vendas=origem.Qtd_Vendas,&#xA;                Preco_Custo=origem.Preco_Custo,&#xA;                Preco_Venda=origem.Preco_Venda,&#xA;                Vendas_Bruta=origem.Vendas_Bruta,&#xA;                Vendas=origem.Vendas,&#xA;                Custo_venda=origem.Custo_venda,&#xA;                Desconto=origem.Desconto,&#xA;                Lucro=origem.Lucro&#xA;                &#xA;--Quando não há registro no destino e há na origem&#xA;&#xA;WHEN NOT MATCHED &#xA;&#xA;THEN &#xA;   INSERT  &#xA;           (ID_Segmento,&#xA;           ID_Pais,&#xA;           ID_Produto,&#xA;           Id_Tipo_Des,&#xA;           Qtd_Vendas,&#xA;           Preco_Custo,&#xA;           Preco_Venda,&#xA;           Vendas_Bruta,&#xA;           Vendas,&#xA;           Custo_venda,&#xA;           Desconto,&#xA;           Lucro)&#xA;     VALUES&#xA;           (origem.ID_Segmento,&#xA;           origem.ID_Pais,&#xA;           origem.ID_Produto,&#xA;           origem.Id_Tipo_Des,&#xA;           origem.Qtd_Vendas,&#xA;           origem.Preco_Custo,&#xA;           origem.Preco_Venda,&#xA;           origem.Vendas_Bruta,&#xA;           origem.Vendas,&#xA;           origem.Custo_venda,&#xA;           origem.Desconto,&#xA;           origem.Lucro);&#xA;&#xA;END TRY  &#xA;BEGIN CATCH&#xA;   IF @@TRANCOUNT &gt; 0  &#xA;        ROLLBACK TRANSACTION; &#xA;&#xA;INSERT INTO [dbo].[LOG_CARGAS]&#xA;           ([NUMERO_ERRO],&#xA;           [SERVERIDADE_ERRO],&#xA;           [ESTADO_ERRO],&#xA;           [PROC_ERRO],&#xA;           [LINHA_ERRO],&#xA;           [MSG_ERRO],&#xA;           [SITUACAO],&#xA;           [PROCESSO],&#xA;           [DATA_INI],&#xA;         [DATA_FIM])&#xA;     VALUES&#xA;        (ERROR_NUMBER(),&#xA;        ERROR_SEVERITY(),&#xA;        ERROR_STATE(),&#xA;        ERROR_PROCEDURE(),&#xA;        ERROR_LINE() ,&#xA;        ERROR_MESSAGE() ,&#xA;        'ERRO',&#xA;        @VPROCESSO,&#xA;      @VDATA_INI,&#xA;      GETDATE()&#xA;      )&#xA;&#xA;        &#xA;END CATCH;  &#xA;&#xA;INSERT INTO LOG_CARGAS&#xA;           ([NUMERO_ERRO],&#xA;           [SERVERIDADE_ERRO],&#xA;           [ESTADO_ERRO],&#xA;           [PROC_ERRO],&#xA;           [LINHA_ERRO],&#xA;           [MSG_ERRO],&#xA;           [SITUACAO],&#xA;           [PROCESSO],&#xA;           [DATA_INI],&#xA;           [DATA_FIM])&#xA;     VALUES&#xA;        (ERROR_NUMBER(),&#xA;        ERROR_SEVERITY(),&#xA;        ERROR_STATE(),&#xA;        ERROR_PROCEDURE(),&#xA;        ERROR_LINE() ,&#xA;        ERROR_MESSAGE() ,&#xA;        'SUCESSO',&#xA;        @VPROCESSO,&#xA;      @VDATA_INI,&#xA;      GETDATE()&#xA;      )&#xA;&#xA;IF @@TRANCOUNT &gt; 0  &#xA;    COMMIT TRANSACTION;  &#xA;GO  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restrição]"
+      DTS:CreationName=""
+      DTS:DTSID="{EA5C3A6C-26B6-4B8D-8A26-472C4291B3CD}"
+      DTS:From="Package\Contêiner da Sequência"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restrição"
+      DTS:To="Package\Contêiner da Sequência 1" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restrição 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{5CF1E04D-CFEA-4888-8CAF-D980AD417073}"
+      DTS:From="Package\Contêiner da Sequência 1"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restrição 1"
+      DTS:To="Package\Contêiner da Sequência 2" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--Esta seção CDATA contém as informações de layout do pacote. A seção inclui informações como coordenadas (x,y), largura e altura.-->
+<!--Se você editar manualmente esta seção e cometer algum erro, poderá excluí-la. -->
+<!--O pacote ainda poderá ser carregado normalmente, mas as informações de layout anteriores serão perdidas e o designer reorganizará automaticamente os elementos na superfície de design.-->
+<Objects
+  Version="8">
+  <!--Cada nó abaixo conterá propriedades que não afetam o comportamento em tempo de execução.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="146,42"
+          Id="Package\Contêiner da Sequência\Limpeza STG"
+          TopLeft="65.5,15.5" />
+        <NodeLayout
+          Size="118,42"
+          Id="Package\Contêiner da Sequência\CARGA"
+          TopLeft="83,114" />
+        <EdgeLayout
+          Id="Package\Contêiner da Sequência.PrecedenceConstraints[Restrição]"
+          TopLeft="140.25,57.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,56.5"
+              Start="0,0"
+              End="0,49">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,49" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="314,207"
+          Size="314,250"
+          Id="Package\Contêiner da Sequência"
+          TopLeft="61,24" />
+        <NodeLayout
+          Size="142,42"
+          Id="Package\Contêiner da Sequência 1\SEGMENTO"
+          TopLeft="7,9" />
+        <NodeLayout
+          Size="104,42"
+          Id="Package\Contêiner da Sequência 1\PAIS"
+          TopLeft="227,14" />
+        <NodeLayout
+          Size="134,42"
+          Id="Package\Contêiner da Sequência 1\PRODUTO"
+          TopLeft="212,82" />
+        <NodeLayout
+          Size="173,42"
+          Id="Package\Contêiner da Sequência 1\TIPO_DESCONTO"
+          TopLeft="6,77" />
+        <EdgeLayout
+          Id="Package\Contêiner da Sequência 1.PrecedenceConstraints[Restrição]"
+          TopLeft="149,32.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="78,0"
+              Start="0,0"
+              End="70.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="70.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Contêiner da Sequência 1.PrecedenceConstraints[Restrição 1]"
+          TopLeft="279,56">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,26"
+              Start="0,0"
+              End="0,18.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Contêiner da Sequência 1.PrecedenceConstraints[Restrição 2]"
+          TopLeft="212,100.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-33,0"
+              Start="0,0"
+              End="-25.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-25.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="411,216"
+          Size="411,259"
+          Id="Package\Contêiner da Sequência 1"
+          TopLeft="502,14.6666666666667" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restrição]"
+          TopLeft="375,146.583333333333">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="127,0"
+              Start="0,0"
+              End="119.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="119.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Contêiner da Sequência 2\CARGA FATO"
+          TopLeft="36,12" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="259,110"
+          Size="259,153"
+          Id="Package\Contêiner da Sequência 2"
+          TopLeft="993.333333333333,68.6666666666667" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restrição 1]"
+          TopLeft="913,144.666666666667">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="80.3333333333335,0"
+              Start="0,0"
+              End="72.8333333333335,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="72.8333333333335,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

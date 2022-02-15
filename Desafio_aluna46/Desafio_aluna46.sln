@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32106.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "Desafio_aluna46", "Desafio_aluna46.dtproj", "{708AF13B-DC2D-411C-8C0C-F13F4BB3767B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Azure|Default = Azure|Default
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{708AF13B-DC2D-411C-8C0C-F13F4BB3767B}.Azure|Default.ActiveCfg = Azure
+		{708AF13B-DC2D-411C-8C0C-F13F4BB3767B}.Azure|Default.Build.0 = Azure
+		{708AF13B-DC2D-411C-8C0C-F13F4BB3767B}.Development|Default.ActiveCfg = Development
+		{708AF13B-DC2D-411C-8C0C-F13F4BB3767B}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8990C7D9-93D0-4E3A-BD62-A4944362A86E}
+	EndGlobalSection
+EndGlobal
